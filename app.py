@@ -30,7 +30,6 @@ app.secret_key = "nejwm4malfjgfpn3cntr5wsz8cniu4nfdur"
 serializer = URLSafeTimedSerializer(app.secret_key)
 # MongoDB setup
 client = MongoClient("mongodb://localhost:27017/")
-# client = MongoClient("mongodb+srv://rajathda:Sp99l0ZXuszijwar@cluster0.x9apgd4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client.audit_portal
 users_col = db.users
 audits_col = db.audits
