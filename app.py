@@ -26,7 +26,7 @@ from flask_mail import Message
 load_dotenv()
 ist = pytz.timezone('Asia/Kolkata')
 app = Flask(__name__)
-app.secret_key = "nejwm4malfjgfpn3cntr5wsz8cniu4nfdur"
+app.secret_key = os.getenv("secret_key")
 serializer = URLSafeTimedSerializer(app.secret_key)
 # MongoDB setup
 client = MongoClient("mongodb://localhost:27017/")

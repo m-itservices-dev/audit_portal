@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Audit Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #002561;
+            --primary-light: #12469b;
+            --accent: #DB6C29;
+            --secondary: #eda530;
+            --secondary-light: rgba(237, 165, 48, 0.2);
+            --text-dark: #333;
+            --text-light: #6c757d;
+            --bg-light: #f8f9fa;
+            --border-color: #dee2e6;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:  'Inter', 'Segoe', Arial;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h2 {
+            font-weight: 600;
+            font-size: 1.6rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        /* Form Styles */
+        .form-content {
+            padding: 1.5rem;
+        }
+
+        .form-section {
+            margin-bottom: 1.8rem;
+            padding: 1.5rem;
+            border-radius: 6px;
+            background: white;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            background-color: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(18, 70, 155, 0.15);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-control[readonly] {
+            background-color: #f8f9fa;
+            color: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.7rem 1.2rem;
+            font-size: 0.90rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-info {
+            background: white;
+            color:var(--primary);
+        }
+
+        .btn-info:hover {
+            background: white;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.875rem;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* obc Report Styles */
+        .obc-report {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .obc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .obc-title {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        .status-major {
+            background: #f7f7f9;
+            color: #030f38;
+        }
+
+        .status-minor {
+            background: #f7f7f9;
+            color: #030f38;
+        }
+        .status-ofi {
+            background: #f7f7f9;
+            color: #030f38;
+        }
+
+        .status-minor {
+            background: #f7f7f9;
+            color: #030f38;
+        }
+
+        /* Checkbox and Radio Styles */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.8rem;
+            margin: 1.2rem 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-top: 0.3rem;
+            margin-right: 0.6rem;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-item label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        fieldset {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1.2rem 0;
+            background: white;
+        }
+
+        legend {
+            font-weight: 600;
+            color: var(--primary);
+            padding: 0 0.5rem;
+            font-size: 1rem;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.2rem;
+            margin: 0.8rem 0;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .radio-item input[type="radio"] {
+            accent-color: var(--primary);
+        }
+
+        /* Document Link Styles */
+        .document-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            background: #f0f4f9;
+            transition: all 0.2s ease;
+        }
+
+        .document-link:hover {
+            background: #e2e8f0;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #dee2e6;
+        }
+
+        /* Toggle Section */
+        .toggle-section {
+            margin: 1rem 0;
+        }
+
+        .toggle-header {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0.5rem;
+            background: #f0f4f9;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .toggle-header i {
+            margin-right: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-header.collapsed i {
+            transform: rotate(-90deg);
+        }
+
+        .toggle-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .toggle-content.collapsed {
+            max-height: 0;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        /* History Item Styles */
+        .history-item {
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #fff;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .obc-number {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .change-date {
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+
+        .change-details p {
+            margin: 0 0 0.8rem 0;
+            color: var(--text-dark);
+        }
+
+        .change-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .change-table th,
+        .change-table td {
+            padding: 0.6rem;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        .change-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .change-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .no-history {
+            text-align: center;
+            color: var(--text-light);
+            font-style: italic;
+            padding: 2rem;
+        }
+
+        /* Flash Messages */
+        .flash-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+            max-width: 400px;
+        }
+
+        .flash-message {
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.3s ease forwards;
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        .flash-success {
+            background-color: var(--success);
+        }
+
+        .flash-error {
+            background-color: var(--danger);
+        }
+
+        .flash-warning {
+            background-color: var(--warning);
+            color: var(--text-dark);
+        }
+
+        .flash-info {
+            background-color: var(--info);
+        }
+
+        .flash-close {
+            cursor: pointer;
+            margin-left: 1rem;
+            font-weight: bold;
+        }
+
+        /* obc dropdown container */
+.obc-dropdown {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: #fafafa;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+/* Summary (clickable header) */
+.obc-summary {
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f0f0f0;
+    transition: background 0.2s;
+}
+
+.obc-summary:hover {
+    background: #e4e4e4;
+}
+
+/* Add an arrow indicator */
+.obc-summary::after {
+    content: '\25BC'; /* down arrow */
+    font-size: 12px;
+    transition: transform 0.2s;
+}
+
+.obc-dropdown[open] > .obc-summary::after {
+    transform: rotate(-180deg); /* flip arrow when open */
+}
+
+/* Inside content */
+.obc-report {
+    padding: 15px;
+    background: #fff;
+}
+
+/* Status badge alignment inside summary */
+.obc-summary .status-badge {
+    margin-left: 8px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .header-actions {
+                justify-content: center;
+            }
+            
+            .form-content {
+                padding: 1rem;
+            }
+            
+            .form-section {
+                padding: 1rem;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 0;
+            }
+            
+            .container {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages Container -->
+    <div class="flash-container" id="flash-container"></div>
+
+    <div class="container">
+        <div class="header">
+            <h2><i class="fas "></i> Update Audit Details</h2>
+            <div class="header-actions">
+                <button type="button" class="btn btn-info" id="view-history-btn">
+                    <i class="fas fa-history"></i> Edit History
+                </button>
+                {% if session['role'] == 'Auditor' %}
+    <a href="{{ url_for('auditor_dashboard') }}">
+{% elif session['role'] == 'Auditee' %}
+    <a href="{{ url_for('auditee_dashboard') }}">
+{% elif session['role'] == 'Lead Auditor' %}
+    <a href="{{ url_for('lead_dashboard') }}">
+{% else %}
+    <a href="#">
+{% endif %}
+    <img src="/static/logo.jpg" alt="Logo"
+         style="height:40px; width:auto; object-fit:contain; border-radius:4px; cursor:pointer;">
+</a>
+
+      
+            </div>
+                   
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="form-content">
+            <!-- Form content remains exactly the same as in the original -->
+            <div class="form-section">
+                <div class="section-title"><i ></i> Audit Information</div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="audit_name" class="form-label">Audit Name</label>
+                        <input type="text" class="form-control" id="audit_name" name="audit_name" value="{{ audit.audit_type }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="audit_function" class="form-label">Audit Function</label>
+                        <input type="text" class="form-control" id="audit_function" name="audit_function" value="{{ audit.audit_area }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduled_date" class="form-label">Audit Start Date</label>
+                        <input type="text" class="form-control" id="audit_date" name="audit_date" value="{{ audit['audit_date'].strftime('%Y-%m-%d %H:%M') if audit['audit_date'] else 'N/A' }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduled_date" class="form-label">Audit End Date</label>
+                        <input type="datetime-local" class="form-control" id="audit_end_date" name="audit_end_date" value="{{ audit['audit_end_date']  }}" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title"> Observations </div>
+
+                <div id="obc-reports-container">
+                    {% for obc in audit.obc_details or [] %}
+                    <details class="obc-dropdown" closed>
+    <summary class="obc-summary">
+        Observation  No. {{ obc.obc }}
+    </summary>
+                    <div class="obc-report">
+                        <div class="obc-header">
+                            <div class="obc-title">Observation Report 
+<span class="status-badge 
+    {% if obc.category == 'Major NC' %}status-major
+    {% elif obc.category == 'Minor NC' %}status-minor
+    {% elif obc.category == 'Strength' %}status-strength
+    {% elif obc.category == 'Opportunity for Improvement/OFI' %}status-ofi
+    {% endif %}">
+    {{ obc.category }}
+</span>
+
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm remove-obc"><i class="fas fa-trash"></i> Remove</button>
+                        </div>
+
+                        <input type="hidden" name="existing_document_id[]" value="{{ obc.document_id if obc.document_id else '' }}">
+                        <input type="hidden" name="existing_document_filename[]" value="{{ obc.document_filename if obc.document_filename else '' }}">
+
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Observation No</label>
+                                <input type="text" class="form-control" name="obc[]" value="{{ obc.obc }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select name="category[]" class="form-control">
+                                    <option value="Major NC" {% if obc.category == 'Major NC' %}selected{% endif %}>Major NC</option>
+                                    <option value="Minor NC" {% if obc.category == 'Minor NC' %}selected{% endif %}>Minor NC</option>
+                                    <option value="Strength" {% if obc.category == 'Strength' %}selected{% endif %}>Strength</option>
+                                    <option value="Opportunity for Improvement/OFI" {% if obc.category == 'Opportunity for Improvement/OFI' %}selected{% endif %}>Opportunity for Improvement/OFI</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Details</label>
+                            <textarea name="category_details[]" class="form-control" rows="3">{{ obc.category_details }}</textarea>
+                        </div>
+
+                        <div class="toggle-section">
+                            <div class="toggle-header" onclick="toggleSection(this)">
+                                <i class="fas fa-chevron-down"></i>
+                                <span>RCA Sections</span>
+                            </div>
+                            <div class="toggle-content">
+                                <div class="form-group">
+                                    <label>RCA</label>
+                                    <textarea class="form-control" name="rca[]" rows="3" >{{ obc.rca }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Corrective (fix now)</label>
+                                    <textarea class="form-control" name="correction[]" rows="3" >{{ obc.correction }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Correction Completion Date</label>
+                                    <input type="datetime-local" class="form-control" name="correction_date[]" value="{{ obc.correction_date }}" >
+                                </div>
+                                <div class="form-group">
+                                    <label>Corrective Action</label>
+                                    <textarea class="form-control" name="corrective_action[]" rows="3" >{{ obc.corrective_action }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>"Auditor" review and acceptance of Corrective Action Plan</label>
+                                    <textarea class="form-control" name="corrective_action_plan[]" rows="3" >{{ obc.corrective_action_plan }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Existing Document</label>
+                            {% if obc.document_id %}
+                                <a href="{{ url_for('view_file', document_id=obc.document_id) }}" target="_blank" class="document-link">
+                                    <i class="fas fa-eye me-1"></i> {{ obc.document_filename }}
+                                </a>
+                            {% else %}
+                                <p class="form-text">No document uploaded</p>
+                            {% endif %}
+                            <input type="file" name="document[]" class="form-control">
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="documented_procedure[]" value="true" 
+                                       {% if obc.documented_procedure %}checked{% endif %} id="doc_procedure_{{ loop.index }}">
+                                <label for="doc_procedure_{{ loop.index }}">Description / Section No(s) of institutional documented procedure</label>
+                            </div>
+
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="iso_clause[]" value="true" 
+                                       {% if obc.iso_clause %}checked{% endif %} id="iso_clause_{{ loop.index }}">
+                                <label for="iso_clause_{{ loop.index }}">Clause No(s) of ISO 21001:2018 / Other ISO Standards</label>
+                            </div>
+
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="naac_manual[]" value="true" 
+                                       {% if obc.naac_manual %}checked{% endif %} id="naac_manual_{{ loop.index }}">
+                                <label for="naac_manual_{{ loop.index }}">Attributes & Metrics description (s) / No(s) of NAAC Manual</label>
+                            </div>
+
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="nba_manual[]" value="true" 
+                                       {% if obc.nba_manual %}checked{% endif %} id="nba_manual_{{ loop.index }}">
+                                <label for="nba_manual_{{ loop.index }}">Accreditation Criteria description (s) / No(s) of NBA Manual</label>
+                            </div>
+
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="abet_manual[]" value="true" 
+                                       {% if obc.abet_manual %}checked{% endif %} id="abet_manual_{{ loop.index }}">
+                                <label for="abet_manual_{{ loop.index }}">Accreditation Criteria description (s) / No(s) of ABET Manual</label>
+                            </div>
+
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="aacsb_manual[]" value="true" 
+                                       {% if obc.aacsb_manual %}checked{% endif %} id="aacsb_manual_{{ loop.index }}">
+                                <label for="aacsb_manual_{{ loop.index }}">Accreditation Criteria description (s) / No(s) of AACSB /AMBA/ EQUIS Manual</label>
+                            </div>
+                        </div>
+
+                        <fieldset>
+                            <legend>Follow-up audit schedule</legend>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>On / within (date)</label>
+                                    <input type="datetime-local" name="follow_up_date[]" value="{{ obc.follow_up_date }}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>By</label>
+                                    <input type="text" name="follow_up_by[]" value="{{ obc.follow_up_by }}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Auditor verification details</label>
+                                <textarea name="verification_details[]" rows="3" class="form-control">{{ obc.verification_details }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Corrective actions found to be:</label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input type="radio" name="action_status_{{ loop.index }}" value="satisfactory" 
+                                               {% if obc.action_status=='satisfactory' %}checked{% endif %} id="satisfactory_{{ loop.index }}">
+                                        <label for="satisfactory_{{ loop.index }}">Satisfactory</label>
+                                    </div>
+                                    <div class="radio-item">
+                                        <input type="radio" name="action_status_{{ loop.index }}" value="unsatisfactory" 
+                                               {% if obc.action_status=='unsatisfactory' %}checked{% endif %} id="unsatisfactory_{{ loop.index }}">
+                                        <label for="unsatisfactory_{{ loop.index }}">Unsatisfactory</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Remarks</label>
+                                <textarea name="remarks[]" rows="3" class="form-control">{{ obc.remarks }}</textarea>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Audit non-conformity closure</legend>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <div class="radio-item">
+                                        <input type="radio" name="closure_status_{{ loop.index }}" value="closed" 
+                                               {% if obc.closure_status=='closed' %}checked{% endif %} id="closed_{{ loop.index }}">
+                                        <label for="closed_{{ loop.index }}">Observation closed out by Auditor on:</label>
+                                    </div>
+                                    <input type="datetime-local" name="obc_closed_date[]" value="{{ obc.obc_closed_date }}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <div class="radio-item">
+                                        <input type="radio" name="closure_status_{{ loop.index }}" value="new" 
+                                               {% if obc.closure_status=='new' %}checked{% endif %} id="new_{{ loop.index }}">
+                                        <label for="new_{{ loop.index }}">New Observation No:</label>
+                                    </div>
+                                    <input type="text" name="obc_new_no[]" value="{{ obc.obc_new_no }}" class="form-control">
+                                </div>
+                            </div>
+                        </fieldset>
+                        
+                       
+                        <fieldset>
+
+    <legend>Auditor Approval</legend>
+        <div class="grid-2">
+        <div class="form-group">
+        <div class="radio-item">
+            <input type="radio" name="auditor_decision_{{ loop.index }}" value="approved"
+                   {% if obc.auditor_decision == 'approved' %}checked{% endif %} 
+                   id="approve_{{ loop.index }}">
+            <label for="approve_{{ loop.index }}">Approve</label>
+        </div>
+        </div>
+        <div class="form-group">
+        <div class="radio-item">
+            <input type="radio" name="auditor_decision_{{ loop.index }}" value="rejected"
+                   {% if obc.auditor_decision == 'rejected' %}checked{% endif %} 
+                   id="reject_{{ loop.index }}">
+            <label for="reject_{{ loop.index }}">Reject</label>
+        </div>
+        </div>
+    </div>
+
+</fieldset>
+
+
+                    </div>
+                    </details>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>No Observation reports found. Add your first Observation report below.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button type="button" class="btn btn-success" id="add-obc"><i class="fas fa-plus"></i> Add New Observation Report</button>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Audit Details</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Edit History Modal -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-history"></i> Edit History</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="history-container">
+                    {% if change_history %}
+                        {% for change in change_history|reverse %}
+                        <div class="history-item">
+                            <div class="history-header">
+                                <span class="obc-number">{{ change.obc_number }}</span>
+<span class="change-date">{{ change.changed_at }}</span>
+                            </div>
+                            <div class="change-details">
+                                <p><strong>Changed by:</strong> {{ change.changed_by }}</p>
+                                <table class="change-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Field</th>
+                                            <th>Old Value</th>
+                                            <th>New Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for field_change in change.changes %}
+                                        <tr>
+                                            <td>{{ field_change.field|replace('_', ' ')|title }}</td>
+                                            <td>{{ field_change.old_value|default('', true) }}</td>
+                                            <td>{{ field_change.new_value|default('', true) }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-history">No edit history available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    // Flash message handling
+    function showFlashMessage(message, type) {
+        const container = document.getElementById('flash-container');
+        const messageEl = document.createElement('div');
+        messageEl.className = `flash-message flash-${type}`;
+        messageEl.innerHTML = `
+            <span>${message}</span>
+            <span class="flash-close" onclick="this.parentElement.remove()">&times;</span>
+        `;
+
+        container.appendChild(messageEl);
+
+        // Animate in
+        setTimeout(() => {
+            messageEl.style.opacity = '1';
+            messageEl.style.transform = 'translateX(0)';
+        }, 10);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (messageEl.parentElement) {
+                messageEl.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => messageEl.remove(), 300);
+            }
+        }, 5000);
+    }
+
+    // Inject Flask flash messages safely
+    document.addEventListener('DOMContentLoaded', () => {
+        const messages = {{ get_flashed_messages(with_categories=true) | tojson }};
+        messages.forEach(([category, message]) => {
+            showFlashMessage(message, category);
+        });
+    });
+
+    // Modal functionality
+    const modal = document.getElementById('history-modal');
+    const btn = document.getElementById('view-history-btn');
+    const span = document.getElementsByClassName('close')[0];
+
+    btn.onclick = function() {
+        modal.style.display = 'block';
+    }
+
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // Add new obc report
+    document.getElementById('add-obc').addEventListener('click', function() {
+        const container = document.getElementById('obc-reports-container');
+
+        const emptyState = container.querySelector('.empty-state');
+        if (emptyState) emptyState.remove();
+
+        const timestamp = Date.now();
+        const html = `
+            <div class="obc-report new">
+                <div class="obc-header">
+                    <div class="obc-title">New Observation Report</div>
+                    <button type="button" class="btn btn-danger btn-sm remove-obc"><i class="fas fa-trash"></i> Remove</button>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Observation No</label>
+                        <input type="text" class="form-control" name="obc[]">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category[]" class="form-control">
+                            <option value="Major NC">Major NC</option>
+                            <option value="Minor NC">Minor NC</option>
+                            <option value="Strength">Strength</option>
+                            <option value="Opportunity for Improvement/OFI">Opportunity for Improvement/OFI</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Details</label>
+                    <textarea name="category_details[]" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="toggle-section">
+                    <div class="toggle-header collapsed" onclick="toggleSection(this)">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>RCA Sections</span>
+                    </div>
+                    <div class="toggle-content collapsed">
+                        <div class="form-group">
+                            <label>RCA</label>
+                            <textarea class="form-control" name="rca[]" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Corrective (fix now)</label>
+                            <textarea class="form-control" name="correction[]" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Correction Completion Date</label>
+                            <input type="datetime-local" class="form-control" name="correction_date[]">
+                        </div>
+                        <div class="form-group">
+                            <label>Corrective Action</label>
+                            <textarea class="form-control" name="corrective_action[]" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>"Auditor" review and acceptance of Corrective Action Plan</label>
+                            <textarea class="form-control" name="corrective_action_plan[]" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Document</label>
+                    <input type="file" name="document[]" class="form-control">
+                </div>
+
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="documented_procedure[]" value="true" id="doc_procedure_new_${timestamp}">
+                        <label for="doc_procedure_new_${timestamp}">Description / Section No(s) of institutional documented procedure</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="iso_clause[]" value="true" id="iso_clause_new_${timestamp}">
+                        <label for="iso_clause_new_${timestamp}">Clause No(s) of ISO 21001:2018 / Other ISO Standards</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="naac_manual[]" value="true" id="naac_manual_new_${timestamp}">
+                        <label for="naac_manual_new_${timestamp}">Attributes & Metrics description (s) / No(s) of NAAC Manual</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="nba_manual[]" value="true" id="nba_manual_new_${timestamp}">
+                        <label for="nba_manual_new_${timestamp}">Accreditation Criteria description (s) / No(s) of NBA Manual</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="abet_manual[]" value="true" id="abet_manual_new_${timestamp}">
+                        <label for="abet_manual_new_${timestamp}">Accreditation Criteria description (s) / No(s) of ABET Manual</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="aacsb_manual[]" value="true" id="aacsb_manual_new_${timestamp}">
+                        <label for="aacsb_manual_new_${timestamp}">Accreditation Criteria description (s) / No(s) of AACSB / AMBA / EQUIS Manual</label>
+                    </div>
+                </div>
+
+                <fieldset>
+                    <legend>Follow-up audit schedule</legend>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>On / within (date)</label>
+                            <input type="datetime-local" name="follow_up_date[]" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>By</label>
+                            <input type="text" name="follow_up_by[]" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Auditor verification details</label>
+                        <textarea name="verification_details[]" rows="3" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Corrective actions found to be:</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" name="action_status_new_${timestamp}" value="satisfactory" id="satisfactory_new_${timestamp}">
+                                <label for="satisfactory_new_${timestamp}">Satisfactory</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" name="action_status_new_${timestamp}" value="unsatisfactory" id="unsatisfactory_new_${timestamp}">
+                                <label for="unsatisfactory_new_${timestamp}">Unsatisfactory</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <textarea name="remarks[]" rows="3" class="form-control"></textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Audit non-conformity closure</legend>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <div class="radio-item">
+                                <input type="radio" name="closure_status_new_${timestamp}" value="closed" id="closed_new_${timestamp}">
+                                <label for="closed_new_${timestamp}">Observation closed out by Auditor on:</label>
+                            </div>
+                            <input type="datetime-local" name="obc_closed_date[]" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <div class="radio-item">
+                                <input type="radio" name="closure_status_new_${timestamp}" value="new" id="new_new_${timestamp}">
+                                <label for="new_new_${timestamp}">New Observation No:</label>
+                            </div>
+                            <input type="text" name="obc_new_no[]" class="form-control">
+                        </div>
+                    </div>
+                </fieldset>
+
+                                        {% if session['role'] == 'Auditor' %}
+                        <fieldset>
+
+    <legend>Auditor Approval</legend>
+        <div class="grid-2">
+        <div class="form-group">
+        <div class="radio-item">
+            <input type="radio" name="auditor_decision_${timestamp}" value="approved"
+                   id="approve_${timestamp}">
+            <label for="approve_${timestamp}">Approve</label>
+        </div>
+        </div>
+        <div class="form-group">
+        <div class="radio-item">
+            <input type="radio" name="auditor_decision_${timestamp}" value="rejected"                  
+                   id="reject_${timestamp}">
+            <label for="reject_${timestamp}">Reject</label>
+        </div>
+        </div>
+    </div>
+
+</fieldset>
+{% endif %}
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+    });
+
+    // Remove obc
+    document.addEventListener('click', function(e) {
+        if (e.target && (e.target.classList.contains('remove-obc') || e.target.closest('.remove-obc'))) {
+            const btn = e.target.classList.contains('remove-obc') ? e.target : e.target.closest('.remove-obc');
+            btn.closest('.obc-report').remove();
+
+            const container = document.getElementById('obc-reports-container');
+            if (container.children.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>No Observation reports found. Add your first Observation report below.</p>
+                    </div>
+                `;
+            }
+        }
+    });
+
+    // Toggle section visibility
+    function toggleSection(element) {
+        const content = element.nextElementSibling;
+        element.classList.toggle('collapsed');
+        content.classList.toggle('collapsed');
+
+        if (content.classList.contains('collapsed')) {
+            content.style.maxHeight = '0';
+        } else {
+            content.style.maxHeight = content.scrollHeight + 'px';
+        }
+    }
+
+    // Initialize toggle sections
+    document.querySelectorAll('.toggle-header').forEach(header => {
+        const content = header.nextElementSibling;
+        if (header.classList.contains('collapsed')) {
+            content.style.maxHeight = '0';
+        } else {
+            content.style.maxHeight = content.scrollHeight + 'px';
+        }
+    });
+
+    // Role-based access control
+function applyRoleBasedAccess() {
+    const userRole = "{{ session['role'] }}";
+
+    if (userRole === 'Auditor') return;
+
+    if (userRole === 'Auditee') {
+        // Make all text inputs, textareas, and selects readonly (but still submit)
+        document.querySelectorAll('input[type="text"], input[type="datetime-local"], textarea, select').forEach(el => {
+            el.setAttribute('readonly', true);
+            el.style.backgroundColor = '#ee';
+            el.style.pointerEvents = 'none';
+        });
+
+        // Disable all checkboxes and radio buttons
+        document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(el => {
+            el.disabled = true;
+        });
+
+        // Enable editing only for RCA, correction, correction_date
+        document.querySelectorAll('textarea[name="rca[]"], textarea[name="correction[]"], input[name="correction_date[]"], textarea[name="corrective_action[]"]' ).forEach(el => {
+            el.removeAttribute('readonly');
+            el.style.backgroundColor = '';
+            el.style.pointerEvents = '';
+        });
+
+        // Add obc button disabled
+        const addObcBtn = document.getElementById('add-obc');
+        if (addObcBtn) addObcBtn.disabled = true;
+    }
+}
+
+window.addEventListener('DOMContentLoaded', applyRoleBasedAccess);
+
+
+
+</script>
+
+<script>
+    const html = `
+<details class="obc-dropdown" open>
+    <summary class="obc-summary">New Observation Report</summary>
+    <div class="obc-report new">
+        <!-- your existing new Observation form markup -->
+    </div>
+</details>
+`;
+
+</script>
+</body>
+</html>
+

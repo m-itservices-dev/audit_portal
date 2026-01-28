@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Manual Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    
+    <style>
+        :root {
+            --primary-dark: #002561;
+            --primary-medium: #12469b;
+            --accent-orange: #DB6c29;
+            --accent-light: #eda5306f;
+            --light-bg: #f4f7f9;
+        }
+        
+        body {
+            font-family:  'Inter', 'Segoe', Arial;
+            background-color: var(--light-bg);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .form-container {
+            max-width: 1400px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .form-header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-bottom: 4px solid var(--accent-orange);
+        }
+        
+        .form-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .form-subtitle {
+            opacity: 0.9;
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+        
+        .form-content {
+            padding: 2rem;
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+            color: white;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: #fbfcfd;
+            border: 1px solid #e9ecef;
+        }
+        
+        .section-title {
+            color: var(--primary-dark);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-light);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ced4da;
+            transition: all 0.2s;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-medium);
+            box-shadow: 0 0 0 0.25rem rgba(18, 70, 155, 0.25);
+        }
+        
+        .btn-submit {
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .btn-submit:hover {
+            background-color: #c15921;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .version-history {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: #fbfcfd;
+            border: 1px solid #e9ecef;
+        }
+        
+        .version-item {
+            padding: 1rem;
+            border-radius: 6px;
+            background: white;
+            border: 1px solid #e9ecef;
+            margin-bottom: 0.75rem;
+        }
+        
+        .view-version {
+            color: var(--primary-medium);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .view-version:hover {
+            text-decoration: underline;
+            color: var(--primary-dark);
+        }
+        
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+        }
+        
+        .alert {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease-out;
+            border: none;
+            font-weight: 500;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .form-header {
+                padding: 1.2rem;
+            }
+            
+            .form-content {
+                padding: 1.5rem;
+            }
+            
+            .form-section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages Container -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+<div class="form-container">
+    <div class="form-header">
+        <div class="header-actions" 
+             style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+             
+            <!-- Left: Title and Subtitle -->
+            <div>
+                <h1 class="form-title"><i class="fas fa-book me-2"></i>Process Manual Input Form</h1>
+                <p class="form-subtitle">Office of Academic Affairs</p>
+            </div>
+
+            <!-- Right: Clickable Logo -->
+            {% if session['role'] == 'Auditor' %}
+                <a href="{{ url_for('auditor_dashboard') }}">
+            {% elif session['role'] == 'Auditee' %}
+                <a href="{{ url_for('auditee_dashboard') }}">
+            {% elif session['role'] == 'Lead Auditor' %}
+                <a href="{{ url_for('lead_dashboard') }}">
+            {% else %}
+                <a href="#">
+            {% endif %}
+                <img src="/static/logo.jpg" alt="Logo"
+                     style="height:40px; width:auto; object-fit:contain; border-radius:4px; cursor:pointer;">
+            </a>
+        </div>
+    </div>
+
+        <div class="form-content">
+
+{%  if session['role'] in ['Auditor', 'Lead Auditor'] %}
+<div class="form-section mt-5">
+    <h3 class="section-title">Add Repository Link</h3>
+    <form action="{{ url_for('upload_repository_link', audit_id=audit._id) }}" method="POST">
+        <div class="mb-3">
+            <label class="form-label">Enter SharePoint or File URL:</label>
+            <input type="url" name="repository_url" class="form-control" placeholder="Paste the URL here" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">File/Folder Name:</label>
+            <input type="text" name="filename" class="form-control" placeholder="Enter document name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-link me-1"></i> Add Link
+        </button>
+    </form>
+</div>
+{% endif %}
+
+<div class="form-section mt-4">
+    <h3 class="section-title">Repository Links</h3>
+    {% if audit.repository_links %}
+        <ul class="list-group">
+            {% for link in audit.repository_links %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ link.url }}" target="_blank">{{ link.filename }}</a>
+                    <div>
+                        <small class="text-muted me-2">
+                            Added by {{ link.uploaded_by }} on {{ link.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                        </small>
+                        {% if session['role'] in ['Auditor', 'Lead Auditor'] %}
+                            <form action="{{ url_for('delete_repository_link', audit_id=audit._id, filename=link.filename) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No links added yet.</p>
+    {% endif %}
+</div>
+
+
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-hide flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+            
+            // Add basic form validation
+            // const form = document.getElementById('process-form');
+            // form.addEventListener('submit', function(e) {
+            //     const outputField = document.getElementById('output');
+            //     if (!outputField.value.trim()) {
+            //         e.preventDefault();
+            //         outputField.classList.add('is-invalid');
+            //         alert('Please fill in the Process Output field (marked as required).');
+            //     }
+            // });
+            
+            // Remove validation styling when user starts typing
+            const inputs = form.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid')) {
+                        this.classList.remove('is-invalid');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

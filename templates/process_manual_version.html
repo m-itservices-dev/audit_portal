@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Process Manual Version</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
+        <h1 class="text-2xl font-bold mb-4">Process Manual - Version {{ version.version_number }}</h1>
+        <p class="text-sm text-gray-600 mb-4">
+            Author: {{ version.author }} <br>
+            Timestamp: {{ version.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+        </p>
+
+        <div class="space-y-4">
+            {% for key, value in version.details.items() %}
+                <div class="border p-4 rounded bg-gray-50">
+                    <h2 class="font-semibold text-gray-700">{{ key.replace('_', ' ').capitalize() }}</h2>
+                    <p class="mt-1 text-gray-800 whitespace-pre-wrap">{{ value if value else '(empty)' }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-6">
+            <a href="{{ url_for('process_manual', audit_id=audit._id) }}" class="px-4 py-2 bg-blue-600 text-white rounded">Back to Form</a>
+        </div>
+    </div>
+</body>
+</html>
