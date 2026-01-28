@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Audit Observation Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #002561;
+            --secondary: #eda530;
+            --accent: #12469b;
+            --highlight: #DB6C29;
+            --light-bg: #f8fafc;
+        }
+        
+        body {
+            font-family:  'Inter', 'Segoe', Arial;
+            background-color: var(--light-bg);
+            color: #334155;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .header-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(237, 165, 48, 0.1);
+            border-color: var(--secondary);
+        }
+        
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(18, 70, 155, 0.1);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            min-width: 800px;
+            width: 100%;
+        }
+        
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        .signature-box {
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            padding: 1rem;
+            background-color: #f8fafc;
+        }
+        
+        /* Flash message styles */
+        .flash-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+        
+        .flash-message {
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.3s forwards;
+        }
+        
+        .flash-success {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .flash-error {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        .flash-warning {
+            background-color: #f59e0b;
+            color: white;
+        }
+        
+        .flash-info {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .history-item {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        @media (max-width: 768px) {
+            .flex-responsive {
+                flex-direction: column;
+            }
+            
+            .btn-responsive {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .grid-responsive {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 lg:p-8">
+    <!-- Flash messages container -->
+    <div class="flash-container" id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <span>{{ message }}</span>
+                        <button class="ml-auto bg-transparent border-none text-white cursor-pointer" onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+        <div class="card">
+            <!-- Header -->
+            <header class="header-bg p-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                    <div>
+
+                        <h2 class="text-xl font-semibold mt-2">Internal Audit Observation Report</h2>
+                    </div>
+                    <div class="mt-4 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                        <button type="button" id="edit-history-btn" class="btn-secondary btn-responsive">
+                            <i class="fas fa-history mr-2"></i>Edit History
+                        </button>
+                {% if session['role'] == 'Auditor' %}
+    <a href="{{ url_for('auditor_dashboard') }}">
+{% elif session['role'] == 'Auditee' %}
+    <a href="{{ url_for('auditee_dashboard') }}">
+{% elif session['role'] == 'Lead Auditor' %}
+    <a href="{{ url_for('lead_dashboard') }}">
+{% else %}
+    <a href="#">
+{% endif %}
+    <img src="/static/logo.jpg" alt="Logo"
+         style="height:40px; width:auto; object-fit:contain; border-radius:4px; cursor:pointer;">
+</a>
+
+                    </div>
+                </div>
+            </header>
+
+            <!-- Form Body -->
+            <form method="POST" class="p-6 space-y-6" id="observation-form">
+                <input type="hidden" name="observation-count" id="observation-count" value="1">
+                
+                <!-- Audit Details Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 grid-responsive">
+                    <div>
+                        <label for="audit-no" class="form-label">Audit No</label>
+                        <input type="text" id="audit-no" name="audit-no" class="form-input" value="{{ audit.audit_ref  }}" readonly>
+                    </div>
+                    <div>
+                        <label for="date" class="form-label">Date</label>
+                        <input type="text" id="date" name="date" class="form-input" value="{{ audit['audit_date'].strftime('%Y-%m-%d') if audit['audit_date'] else 'N/A' }}" readonly>
+                    </div>
+                    <div>
+                        <label for="time" class="form-label">Time</label>
+                        <input type="text" id="time" name="time" class="form-input" value="{{ audit.ia_details.time if audit.ia_details and audit.ia_details.time else '' }}">
+                    </div>
+                    <div class="lg:col-span-2">
+                        <label for="report-no" class="form-label">Observation Report No</label>
+                        <input type="text" id="report-no" name="report-no" class="form-input" value="{{ audit.ia_details.report_no if audit.ia_details and audit.ia_details.report_no else '' }}">
+                    </div>
+                     <div>
+                        <label for="auditors" class="form-label">Auditor(s)</label>
+                        <input type="text" id="auditors" name="auditors" class="form-input" value="{{ a.auditor1_name }}" readonly>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <label for="department" class="form-label">School / Centre / Office / Department / Area</label>
+                        <input type="text" id="department" name="department" class="form-input" value="{{ a.audit_area }}" readonly>
+                    </div>
+                    <div>
+                        <label for="auditees" class="form-label">Auditee(s)</label>
+                        <input type="text" id="auditees" name="auditees" class="form-input" value="{{  a.auditee1_name }}" readonly>
+                    </div>
+                </div>
+
+                <!-- Observations Table Section -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b pb-2">Observations</h3>
+                    <div class="table-container border rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sl.No</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Observations</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Things to be done</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target Date</th>
+                                     {% if session['role'] in ['Auditor', 'Lead Auditor'] %}
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                     {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody id="observations-tbody" class="bg-white divide-y divide-gray-200">
+                                {% if audit.ia_details and audit.ia_details.observations %}
+                                    {% for observation in audit.ia_details.observations %}
+                                    <tr>
+                                        <td class="px-4 py-3">
+                                            <span class="sl-no font-medium text-gray-700">{{ loop.index }}</span>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <textarea name="observation-{{ loop.index }}-observation" class="form-textarea" rows="2">{{ observation.observation }}</textarea>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <select name="observation-{{ loop.index }}-status" class="form-select">
+                                                <option value="Negative" {% if observation.status == 'Negative' %}selected{% endif %}>Negative</option>
+                                                <option value="Positive" {% if observation.status == 'Positive' %}selected{% endif %}>Positive</option>
+                                            </select>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <select name="observation-{{ loop.index }}-category" class="form-select">
+                                                <option value="Major" {% if observation.category == 'Major' %}selected{% endif %}>Major</option>
+                                                <option value="Minor" {% if observation.category == 'Minor' %}selected{% endif %}>Minor</option>
+                                                <option value="Strength" {% if observation.category == 'Strength' %}selected{% endif %}>Strength</option>
+                                                <option value="Opportunity for Improvement/OFI" {% if observation.category == 'Opportunity for Improvement/OFI' %}selected{% endif %}>Opportunity for Improvement/OFI</option>
+                                            </select>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <textarea name="observation-{{ loop.index }}-things_to_do" class="form-textarea" rows="2">{{ observation.things_to_do }}</textarea>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <input type="date" name="observation-{{ loop.index }}-target_date" class="form-input" value="{{ observation.target_date }}">
+                                        </td>
+                                         {% if session['role'] in ['Auditor', 'Lead Auditor'] %}
+                                        <td class="px-4 py-3 text-center">
+                                            <button type="button" class="btn-danger remove-row-btn" onclick="removeRow(this)">
+                                                <i class="fas fa-trash mr-1"></i>Remove
+                                            </button>
+                                        </td>
+                                         {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td class="px-4 py-3">
+                                        <span class="sl-no font-medium text-gray-700">1</span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <textarea name="observation-1-observation" class="form-textarea" rows="2"></textarea>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <select name="observation-1-status" class="form-select">
+                                            <option value="Negative">Negative</option>
+                                            <option value="Positive">Positive</option>
+                                        </select>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <select name="observation-1-category" class="form-select">
+                                            <option value="Major">Major</option>
+                                            <option value="Minor">Minor</option>
+                                            <option value= "Strength">Strength</option>
+                                            <option value="Opportunity for Improvement/OFI">Opportunity for Improvement/OFI</option>
+
+                                        </select>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <textarea name="observation-1-things_to_do" class="form-textarea" rows="2"></textarea>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <input type="date" name="observation-1-target_date" class="form-input">
+                                    </td>
+                                     {% if session['role'] in ['Auditor', 'Lead Auditor'] %}
+                                    <td class="px-4 py-3 text-center">
+                                        <button type="button" class="btn-danger remove-row-btn" onclick="removeRow(this)">
+                                            <i class="fas fa-trash mr-1"></i>Remove
+                                        </button>
+                                    </td>
+                                    {% endif %}
+
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                     {% if session['role'] in ['Auditor', 'Lead Auditor'] %}
+                    <div class="flex justify-end">
+                        <button type="button" id="add-observation-btn" class="btn-secondary text-sm" onclick="addObservationRow()">
+                            <i class="fas fa-plus mr-1"></i>Add Observation
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex flex-col sm:flex-row justify-center pt-6 space-y-3 sm:space-y-0 sm:space-x-4 flex-responsive">
+                    <button type="submit" class="btn-primary w-full sm:w-auto text-lg">
+                        <i class="fas fa-save mr-2"></i>Save Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Edit History Modal -->
+    <div id="edit-history-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="text-xl font-semibold mb-4">Edit History</h2>
+            <div id="edit-history-content">
+                <!-- History will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store the initial observation count
+        // let observationCount = {{ audit.ia_details.observations|length if audit.ia_details and audit.ia_details.observations else 1 }};
+        let observationCount = parseInt('{{ audit.ia_details.observations|length if audit.ia_details and audit.ia_details.observations else 1 }}', 10);
+
+        function updateSerialNumbers() {
+            const rows = document.querySelectorAll('#observations-tbody tr');
+            rows.forEach((row, index) => {
+                row.querySelector('.sl-no').textContent = index + 1;
+                // Update all input names with the new index
+                const inputs = row.querySelectorAll('input, textarea, select');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name');
+                    if (name) {
+                        const parts = name.split('-');
+                        parts[1] = index + 1; // Update the index part
+                        input.setAttribute('name', parts.join('-'));
+                    }
+                });
+            });
+            document.getElementById('observation-count').value = rows.length;
+        }
+
+        function addObservationRow() {
+            const tbody = document.getElementById('observations-tbody');
+            observationCount++;
+            
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td class="px-4 py-3">
+                    <span class="sl-no font-medium text-gray-700">${observationCount}</span>
+                </td>
+                <td class="px-4 py-3">
+                    <textarea name="observation-${observationCount}-observation" class="form-textarea" rows="2"></textarea>
+                </td>
+                <td class="px-4 py-3">
+                    <select name="observation-${observationCount}-status" class="form-select">
+                        <option value="Negative">Negative</option>
+                        <option value="Positive">Positive</option>
+                    </select>
+                </td>
+                <td class="px-4 py-3">
+                    <select name="observation-${observationCount}-category" class="form-select">
+                        <option value="Major">Major</option>
+                        <option value="Minor">Minor</option>
+                        <option value= "Strength">Strength</option>
+                        <option value="Opportunity for Improvement/OFI">Opportunity for Improvement/OFI</option>
+                    </select>
+                </td>
+                <td class="px-4 py-3">
+                    <textarea name="observation-${observationCount}-things_to_do" class="form-textarea" rows="2"></textarea>
+                </td>
+                <td class="px-4 py-3">
+                    <input type="date" name="observation-${observationCount}-target_date" class="form-input">
+                </td>
+                <td class="px-4 py-3 text-center">
+                    <button type="button" class="btn-danger remove-row-btn" onclick="removeRow(this)">
+                        <i class="fas fa-trash mr-1"></i>Remove
+                    </button>
+                </td>
+            `;
+            
+            tbody.appendChild(newRow);
+            document.getElementById('observation-count').value = observationCount;
+            
+            // Apply role-based access to the new row
+            applyRoleBasedAccessToRow(newRow);
+        }
+
+        function removeRow(button) {
+            const row = button.closest('tr');
+            row.remove();
+            updateSerialNumbers();
+            observationCount = document.querySelectorAll('#observations-tbody tr').length;
+            document.getElementById('observation-count').value = observationCount;
+        }
+
+        // Edit History Modal functionality
+        const modal = document.getElementById("edit-history-modal");
+        const btn = document.getElementById("edit-history-btn");
+        const span = document.getElementsByClassName("close")[0];
+        const historyContent = document.getElementById("edit-history-content");
+
+        btn.onclick = function() {
+            fetchEditHistory();
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function fetchEditHistory() {
+            // Show loading state
+            historyContent.innerHTML = '<div class="text-center py-4">Loading history...</div>';
+            
+            // Fetch edit history from the server
+fetch(`/get_edit_history/{{ audit._id }}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.length === 0) {
+            historyContent.innerHTML = '<div class="text-center py-4">No edit history found.</div>';
+            return;
+        }
+
+        let html = '';
+        data.forEach(change => {
+            html += `
+            <div class="history-item">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-semibold">${change.field}</p>
+                        <p class="text-sm text-gray-600">Changed from "${change.old_value}" to "${change.new_value}"</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500">${new Date(change.changed_at).toLocaleString()}</p>
+                        <p class="text-sm text-gray-500">By: ${change.changed_by}</p>
+                    </div>
+                </div>
+            </div>
+            `;
+        });
+
+        historyContent.innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error fetching edit history:', error);
+        historyContent.innerHTML = '<div class="text-center py-4 text-red-500">Error loading history.</div>';
+    });
+
+        }
+        
+function applyRoleBasedAccess() {
+    const userRole = "{{ session['role'] }}";
+    // Disable all fields by default
+    document.querySelectorAll('input, textarea, select, button.remove-row-btn').forEach(el => {
+        el.disabled = true;
+    });
+
+    if (userRole === 'Auditor') {
+        // Fields Auditor can edit by ID
+        const auditorEditableIds = ['report-no', 'time', 'date', 'auditors', 'auditees'];
+        auditorEditableIds.forEach(id => {
+            const field = document.getElementById(id);
+            if (field) field.disabled = false;
+        });
+
+        // In observations table, enable fields for Auditor
+        document.querySelectorAll(
+            'textarea[name*="-observation"], select[name*="-status"], select[name*="-category"], textarea[name*="-things_to_do"], input[name*="-target_date"], button.remove-row-btn'
+        ).forEach(el => {
+            el.disabled = false;
+        });
+    }
+
+    if (userRole === 'Auditee') {
+        // In observations table, enable Things to be done, Target Date, and Category
+        document.querySelectorAll(
+            'textarea[name*="-things_to_do"], input[name*="-target_date"]'
+        ).forEach(el => {
+            el.disabled = false;
+        });
+    }
+
+    const addObservationBtn = document.getElementById('add-observation-btn');
+    addObservationBtn.disabled = (userRole === 'Auditee');
+}
+
+// function applyRoleBasedAccessToRow(row) {
+//     const userRole = "{{ session['role'] }}";
+
+//     // Disable all fields in the row by default
+//     row.querySelectorAll('input, textarea, select, button.remove-row-btn').forEach(el => {
+//         el.disabled = true;
+//     });
+
+//     if (userRole === 'Auditor') {
+//         // Enable fields for Auditor
+//         row.querySelectorAll(
+//             'textarea[name*="-observation"], select[name*="-status"], select[name*="-category"], textarea[name*="-things_to_do"], input[name*="-target_date"], button.remove-row-btn'
+//         ).forEach(el => {
+//             el.disabled = false;
+//         });
+//     }
+
+//     if (userRole === 'Auditee') {
+//         // Enable Things to be done, Target Date, and Category for Auditee
+//         row.querySelectorAll(
+//             'textarea[name*="-things_to_do"], input[name*="-target_date"]'
+//         ).forEach(el => {
+//             el.disabled = false;
+//         });
+//     }
+// }
+
+
+        window.addEventListener('DOMContentLoaded', function() {
+            applyRoleBasedAccess();
+            
+            // Auto-hide flash messages after 5 seconds
+            setTimeout(() => {
+                const flashMessages = document.querySelectorAll('.flash-message');
+                flashMessages.forEach(message => {
+                    message.style.transition = 'opacity 0.5s';
+                    message.style.opacity = '0';
+                    setTimeout(() => message.remove(), 500);
+                });
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
+
+

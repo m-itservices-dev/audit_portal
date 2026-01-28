@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a clean, modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Using the Inter font family */
+        body {
+            font-family: 'Inter', 'Segoe', Arial;
+        }
+        /* Custom styles for better aesthetics */
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-7xl mx-auto bg-white rounded-2xl shadow-lg p-6 sm:p-8">
+
+        <!-- Form Header -->
+<!-- Form Header -->
+<header class="mb-8 flex justify-between items-center">
+    <div>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Assessment Process Audit Checklist</h1>
+        <p class="text-sm text-gray-500 mt-1">Chanakya University</p>
+    </div>
+        
+                {% if session['role'] == 'Auditor' %}
+    <a href="{{ url_for('auditor_dashboard') }}">
+{% elif session['role'] == 'Auditee' %}
+    <a href="{{ url_for('auditee_dashboard') }}">
+{% elif session['role'] == 'Lead Auditor' %}
+    <a href="{{ url_for('lead_dashboard') }}">
+{% else %}
+    <a href="#">
+{% endif %}
+    <img src="/static/logo.jpg" alt="Logo"
+         style="height:40px; width:auto; object-fit:contain; border-radius:4px; cursor:pointer;">
+</a>
+
+</header>
+
+        <!-- Audit Checklist Table -->
+        <form id="assessment-audit-form" method="POST" action="/audit_checklist/{{ audit._id }}">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 border border-gray-200">
+
+                        <!-- New section: Process document for Periodical service & repair of communication equipment -->
+                        <tr class="bg-yellow-100">
+                            <td colspan="4" class="px-6 py-3 text-sm font-semibold text-gray-800">Process document for Periodical service & repair of communication equipment</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="3.1">
+                                    1
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Communication equipment is serviced against of applicable national /international /Industry /Proprietary standards / Manuals by external service provider. Show applicable sections of such documents against which service / test / calibration is done.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '3.1' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '3.1' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="3.2">
+                                    2
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">What is reviewing criteria to ensure that the interval / frequency for the equipment service is adequate?</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '3.2' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '3.2' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            
+                        </tr>
+                        <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="3.3">
+                                    3
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show some physical / visible evidence on the successfully serviced equipment for proper identification labelling status of service.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '3.3' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '3.3' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="3.4">
+                                    4
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the metrics and graphical charts for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '3.4' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '3.4' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="3.5">
+                                    5
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the relevant records / reports / documents for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '3.5' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '3.5' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+
+                             <!-- New section: Process document for Periodical service & repair of communication equipment -->
+                        <tr class="bg-yellow-100">
+                            <td colspan="4" class="px-6 py-3 text-sm font-semibold text-gray-800">Process document for External Communication</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="4.1">
+                                    1
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">How do you communicate externally the university faculty research publications & achievements? Show any documented evidence (paper/electronic) for such external communication.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '4.1' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '4.1' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="4.2">
+                                    2
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show documented evidence (paper/electronic) for various revisions of the contents, and design of the external communication.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '4.2' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '4.2' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            
+                        </tr>
+                        <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="4.3">
+                                    3
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show some documented evidence (paper /electronic) for the action plan for the improvement of the university management system based on the feedback inputs of external communication recipient.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '4.3' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '4.3' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="4.4">
+                                    4
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the metrics and graphical charts for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '4.4' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '4.4' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="4.5">
+                                    5
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the relevant records / reports / documents for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '4.5' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '4.5' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+
+
+                             <!-- New section: Process document for Periodical service & repair of communication equipment -->
+                        <tr class="bg-yellow-100">
+                            <td colspan="4" class="px-6 py-3 text-sm font-semibold text-gray-800">Process document for Coordination, performance evaluation, and rating of external service providers</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="5.1">
+                                    1
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">For the year 2025, show the performance revaluation plan/ calendar for the three categories of the external service providers.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '5.1' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '5.1' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="5.2">
+                                    2
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">What is the frequency for reviewing the expression / formulation of the external service provider performance rating to ensure that they align with the branding needs of the university.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '5.2' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '5.2' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            
+                        </tr>
+                        <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="5.3">
+                                    3
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Is there any periodic mechanism to review Table-2’s decision criteria to approve, conditionally approve, or reject the external service provider to ensure that such criteria align with the business needs of the university.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '5.3' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '5.3' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="5.4">
+                                    4
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the metrics and graphical charts for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '5.4' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '5.4' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="5.5">
+                                    5
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the relevant records / reports / documents for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '5.5' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '5.5' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                              <!-- New section: Process document for Periodical service & repair of communication equipment -->
+                        <tr class="bg-yellow-100">
+                            <td colspan="4" class="px-6 py-3 text-sm font-semibold text-gray-800">Process document for Communication stores stock verification</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="6.1">
+                                    1
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">What are criteria by which you determine the frequency for the stock verification? Show documented (paper /electronic) evidence of the stock verification schedule for year 2024 & 2025.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '6.1' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '6.1' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="6.2">
+                                    2
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us physical evidence for designated location /storage bins for storage of the goods issued by the Office of Communication.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '6.2' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '6.2' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            
+                        </tr>
+                        <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="6.3">
+                                    3
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">What steps are taken to minimize deterioration or damage of stock goods in storage.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '6.3' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '6.3' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="6.4">
+                                    4
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the metrics and graphical charts for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '6.4' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '6.4' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="6.5">
+                                    5
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">	Show us all the relevant records / reports / documents for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '6.5' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '6.5' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+
+                                 <!-- New section: Process document for Periodical service & repair of communication equipment -->
+                        <tr class="bg-yellow-100">
+                            <td colspan="4" class="px-6 py-3 text-sm font-semibold text-gray-800">Process document for Development and Printing of Posters, Magazines etc</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="7.1">
+                                    1
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show any plan to upgrade or renew licences of software tools i.e. Adobe Photoshop, Adobe Illustrator, Adobe InDesign.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '7.1' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '7.1' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="7.2">
+                                    2
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show evidence for emailing the first draft copy of the printing material to the required stakeholders/ indenters for acceptance.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '7.2' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '7.2' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            
+                        </tr>
+                        <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="7.3">
+                                    3
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show documented for approval from the Manager/ Design Lead of the Communication Department for inclusion of the changes in printing material by stakeholders/ indenters after first draft review.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '7.3' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '7.3' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="7.4">
+                                    4
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the metrics and graphical charts for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '7.4' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '7.4' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="7.5">
+                                    5
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the relevant records / reports / documents for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '7.5' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '7.5' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+
+                              <!-- New section: Process document for Periodical service & repair of communication equipment -->
+                        <tr class="bg-yellow-100">
+                            <td colspan="4" class="px-6 py-3 text-sm font-semibold text-gray-800">Process document for Website Management</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.1">
+                                    1
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">	Show documented evidence (paper/electronic) for the Content Manager’s review of the content submission for accuracy, grammar, and alignment with the website's tone and strategy.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.1' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.1' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.2">
+                                    2
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show documented evidence (paper/electronic) for final approval from stakeholders for publishing the content to the live site.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.2' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.2' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            
+                        </tr>
+                        <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.3">
+                                    3
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">In any case of the design or structural changes requests, the show the documented evidence (paper/electronic) for the stakeholder feedback / suggestion / approval for the provided website mock-up for the major changes.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.3' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.3' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.4">
+                                    4
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show the functional & visual test reports for the implemented the changes by the design /IT team and user test report to ensure usability after significant design or structural changes before changes are pushed live.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.4' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.4' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.5">
+                                    5
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">In the escalation procedure, show documented evidence (paper/electronic) of test reports after deploying the permanent solution.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.5' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.5' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.6">6</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">In case of daily maintenance tasks dated 8 or 10th Feb-25, show documented evidence (paper/electronic) of checklist for various tasks carried out.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.6' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.6' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.7">
+                                    7
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">For the last week of January-2025, show documented evidence (paper/electronic) for website analytics review report for website traffic, user behaviour, and performance trends using Google Analytics or similar tools.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.7' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.7' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.8">
+                                    8
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">As monthly maintenance task for any month in year 2024, show some user feedback, which was used to implement changes or improvements in the website.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.8' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.8' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.9">
+                                    9
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">For last quarter of the year 2024, show documented evidence (paper/electronic) for UX test report and Full website back test report.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.9' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.9' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.10">
+                                    10
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">For last quarter of the year 2024, what was website search rankings based on SEO audit run.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.10' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.10' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.11">
+                                    11
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">For the month Dec-2025(Security Audit) and annual year 2024 (Full Site Audit), show documented evidence (paper/electronic) for (a) Website Security Audit for scanning your website and its server for its server for existing or potential weakness /vulnerabilities that hackers can exploit, (b) Penetration tests for launching pseudo hacking attacks against application, mimicking ones that happen in real life to assess the risks associated with identified weakness / vulnerabilities, (c) Identifying methods / solutions / patches to contain / mitigate the risks. Do you have (a) Vulnerabilities scanning tools like Sucuri Site Check, Qualys SSL Server Test, & Intruder, and (b) Penetration testing tools like Metasploit.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.11' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.11' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.12">
+                                    12
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show the Security Sockets Layer (SSL) digital certificate for link between Web Server and Web Browser. What is next expiry date of SSL certificate.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.12' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.12' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.13">
+                                    13
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">In compliance with Backup and Recovery Policy, is there are multi-stage backup systems for website data to protect against data loss / breaches/ vulnerabilities?</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.13' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.13' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.14">
+                                    14
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Are recovery systems for such data established, what is the recovery duration. Was duration determination test carried? Show the test report.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.14' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.14' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.15">
+                                    15
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Is the Web Application Firewall Hybrid Security model that is both Blocklist and Allow list?</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.15' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.15' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.16">
+                                    16
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the metrics and graphical charts for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.16' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.16' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+                            <tr><td class="px-4 py-4 text-center text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8.17">
+                                    17
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Show us all the relevant records / reports / documents for this process as listed in the Metrics & Forms sheet.</td>
+                             
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8.17' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8.17' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                            </tr>
+
+
+                                                <th class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="w-24 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doc. No.</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Guidelines for</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Show documented evidence (Paper/Electronic)</th>
+                            <th scope="col" class="w-48 px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Conformance</th>
+                        </tr>
+                    </th>
+                    <tbody class="bg-white divide-y divide-gray-200" id="checklist-body">
+                        <!-- Original 10 rows -->
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="1">1
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Identification of statutory compliance and regulatory bodies.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">List of 5 top institutions for assessment practices.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]">
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '1' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '1' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="2">2</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Assessment information dissemination.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Is Assessment Handbook / its draft was uploaded in institutional website.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '2' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '2' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="3">3</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Constitution of Assessment related committees and offices.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Authenticated member list of Examination Ethics Committee.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '3' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '3' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="4">4</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Scheduling of the Learning Assessments calendar.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Schedule of the Formative Assessment.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '4' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '4' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="5">5</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Schedule of Make-up Exam.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">List of students appearing for Make-up exam in academic year 2024-2025.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '5' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '5' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="6">6</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Preservation of Answer scripts.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Any sample of student written request to show answer scripts.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '6' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '6' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="7">7</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Facilitation of NAD and ABC.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Any lateral admissions case.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '7' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '7' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="8">8</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Results Analytics for Academic Advice.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Any survey conducted on assessment to understand students' perception regarding assessment.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '8' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '8' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="9">9</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">Procurement of Assessment equipment/stationary and preparing facilities.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">List of approved vendors.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '9' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '9' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-gray-500">
+                                <input type="hidden" name="item_id[]" value="10">10</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">SA QP preparation and review.</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">SA QP review by the school Examination Committee.</td>
+                            <td class="px-4 py-4">
+                                <select name="conformance[]"     >
+                                    <option value="">Select</option>
+                                    <option value="Yes" {% if checklist_data %}{% for item in checklist_data if item.id == '10' and item.conformance == 'Yes' %}selected{% endfor %}{% endif %}>Yes</option>
+                                    <option value="No" {% if checklist_data %}{% for item in checklist_data if item.id == '10' and item.conformance == 'No' %}selected{% endfor %}{% endif %}>No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                            
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="mt-8 flex justify-end gap-4">
+                <button type="submit" class="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Submit Audit
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+
+<script>
+function applyRoleBasedAccess() {
+    const userRole = "{{ session['role'] }}";
+
+    if (userRole === 'Auditor') {
+        // Auditor can edit everything
+        return;
+    }
+
+    if (userRole === 'Auditee') {
+        // Disable all select elements by default
+        document.querySelectorAll('select, input, textarea').forEach(el => {
+            el.disabled = true;
+        });
+
+        // Allow Auditee to edit only these fields (even multiple instances)
+    }
+}
+
+window.addEventListener('DOMContentLoaded', applyRoleBasedAccess);
+</script>
+
+</html>

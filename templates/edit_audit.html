@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Audit</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary: #002561;
+      --secondary: #12469b;
+      --accent: #DB6c29;
+      --light-accent: #eda5306f;
+      --light-bg: #f8fafc;
+      --border: #e2e8f0;
+    }
+    
+    body {
+      background-color: #f5f7fa;
+      font-family:  'Inter', 'Segoe', Arial;
+      color: #334155;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    
+    /* Header */
+    .dashboard-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 0.75rem 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dashboard-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .user-profile {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .stat-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-right: 1rem;
+    }
+    
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+    
+    /* Tabs */
+    .main-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+    }
+    
+    .card-tabs {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background-color: var(--light-bg);
+    }
+    
+    .card-tab {
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-right: 0.4rem;
+      font-weight: 500;
+      color: #64748b;
+      transition: all 0.15s ease;
+      font-size: 0.85rem;
+      border: 1px solid transparent;
+    }
+    
+    .card-tab.active {
+      background-color: white;
+      color: var(--primary);
+      border-color: var(--border);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    
+    /* Content */
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Status badges */
+    .status-badge {
+      padding: 0.3rem 0.6rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .status-scheduled { background-color: #e8f4ff; color: #0d6efd; }
+    .status-progress { background-color: #fff3cd; color: #ffc107; }
+    .status-completed { background-color: #d1e7dd; color: #198754; }
+    .status-cancelled { background-color: #f8d7da; color: #dc3545; }
+
+    .form-section {
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border);
+    }
+    
+    .section-title {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 1.2rem;
+    }
+    
+    /* Table */
+    .audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      border: 1px solid var(--border);
+    }
+    
+    .audit-table th {
+      background-color: var(--primary);
+      color: white;
+      padding: 0.75rem;
+      font-weight: 600;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+      white-space: nowrap;
+    }
+    
+    .audit-table td {
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      vertical-align: middle;
+      text-align: center;
+    }
+    
+    .audit-table tr {
+      transition: background-color 0.1s ease;
+    }
+    
+    .audit-table tr:hover {
+      background-color: #f8fafc;
+    }
+    
+    .audit-table tr:nth-child(even) {
+      background-color: #fafbfc;
+    }
+    
+    .audit-table tr:nth-child(even):hover {
+      background-color: #f1f5f9;
+    }
+    
+    /* Status badges */
+    .status-badge {
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+      text-align: center;
+      min-width: 80px;
+    }
+    
+    .status-scheduled { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .status-progress { background-color: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
+    .status-completed { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .status-cancelled { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    
+    /* Buttons */
+    .btn {
+      font-size: 0.8rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      border-color: var(--secondary);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-outline-primary {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .btn-outline-primary:hover {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+    
+    /* Form elements */
+    .form-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+      color: #475569;
+    }
+    
+    .form-control, .form-select {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(0, 37, 97, 0.1);
+    }
+    
+    /* Flash messages */
+    .flash-container {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 9999;
+      max-width: 320px;
+    }
+    
+    .alert {
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      animation: slideInRight 0.3s ease-out;
+      font-size: 0.8rem;
+      padding: 0.75rem 1rem;
+      border: none;
+    }
+    
+    @keyframes slideInRight {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .card-tabs {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .card-tab {
+        margin-right: 0;
+        text-align: center;
+      }
+      
+      .audit-table {
+        font-size: 0.75rem;
+      }
+      
+      .col-actions {
+        display: none;
+      }
+      
+      .form-section {
+        padding: 1rem;
+      }
+    }
+    
+    /* Compact table improvements */
+    .table-responsive {
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    
+    /* Action buttons in table */
+    .btn-group-sm > .btn, .btn-sm {
+      padding: 0.2rem 0.4rem;
+    }
+    
+    /* Subtle highlights */
+    .text-muted {
+      color: #64748b !important;
+    }
+    
+    .opacity-75 {
+      opacity: 0.8;
+    }
+    
+    /* Table header styling */
+    .table-header {
+    background-color: var(--light-bg);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+    color: var(--primary);
+    }
+    
+    /* Improved table cell alignment */
+    .audit-table td, .audit-table th {
+      vertical-align: middle;
+    }
+    
+    /* Better spacing for table content */
+    .table-content {
+      padding: 1rem;
+    }
+    
+    /* Custom styles for edit audit page */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .card-header.bg-info {
+      background:  var(--primary) !important;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #5c636a;
+      border-color: #565e64;
+    }
+  </style>
+</head>
+<body class="p-4">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="dashboard-title">Edit Audit</h1>
+      
+            {% if session['role'] == 'Auditor' %}
+                <a href="{{ url_for('auditor_dashboard') }}">
+            {% elif session['role'] == 'Auditee' %}
+                <a href="{{ url_for('auditee_dashboard') }}">
+            {% elif session['role'] == 'Lead Auditor' %}
+                <a href="{{ url_for('lead_dashboard') }}">
+            {% else %}
+                <a href="#">
+            {% endif %}
+                <img src="/static/logo.jpg" alt="Logo"
+                     style="height:40px; width:auto; object-fit:contain; border-radius:4px; cursor:pointer;">
+            </a>
+    </div>
+
+    <form action="{{ url_for('edit_audit', audit_id=audit._id) }}" method="POST">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Basic Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Audit Type</label>
+<select name="audit_type" class="form-select" required>
+    <option value="">Select Audit Type</option>
+    <option value="Institutional_documented_procedure" {{ 'selected' if audit_type=='Institutional_documented_procedure' else '' }}>
+        Institutional Documented Procedure
+    </option>
+    <option value="ISO_Standards" {{ 'selected' if audit.audit_type=='ISO_Standards' else '' }}>
+        ISO Standards
+    </option>
+    <option value="NAAC_Manual" {{ 'selected' if audit.audit_type=='NAAC_Manual' else '' }}>
+        NAAC Manual
+    </option>
+    <option value="NBA_Manual" {{ 'selected' if audit.audit_type=='NBA_Manual' else '' }}>
+        NBA Manual
+    </option>
+    <option value="ABET_Manual" {{ 'selected' if audit.audit_type=='ABET_Manual' else '' }}>
+        ABET Manual
+    </option>
+    <option value="AACSB_AMBA_EQUIS_Manual" {{ 'selected' if audit.audit_type=='AACSB_AMBA_EQUIS_Manual' else '' }}>
+        AACSB/AMBA/EQUIS Manual
+    </option>
+</select>
+
+
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">School / Centre / Office / Department / Function / Area / Process</label>
+              <input type="text" name="audit_area" class="form-control" value="{{ audit.audit_area }}" >
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">Audit Date</label>
+              <input type="datetime-local" name="audit_date" class="form-control" 
+                     value="{{ audit['audit_date'].strftime('%Y-%m-%d %H:%M') if audit['audit_date'] else 'N/A' }}" >
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Audit Ref. No.</label>
+              <input type="text" name="audit_ref" class="form-control" value="{{ audit.audit_ref }}" >
+            </div>
+<div class="col-md-4">
+  <label class="form-label">Status</label>
+  <select name="status" class="form-control" id="statusSelect">
+    <option value="Scheduled" {{ 'selected' if audit.status=='Scheduled' else '' }}>Scheduled</option>
+    <option value="In Progress" {{ 'selected' if audit.status=='In Progress' else '' }}>In Progress</option>
+    <option value="Completed" {{ 'selected' if audit.status=='Completed' else '' }}>Completed</option>
+    <option value="Cancelled" {{ 'selected' if audit.status=='Cancelled' else '' }}>Cancelled</option>
+  </select>
+</div>
+
+<div class="col-md-8" id="cancelReasonContainer" style="display:none;">
+  <label class="form-label">Reason for Cancellation</label>
+  <textarea name="cancel_reason" class="form-control" rows="3"
+  placeholder="Enter reason here...">{{ audit.cancel_reason if audit.cancel_reason else '' }}</textarea>
+</div>
+          </div>
+          
+        </div>
+      </div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-4">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Auditors</h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label class="form-label">Auditor 1</label>
+          <select name="auditor1" class="form-control" required>
+            <option value="">Select Auditor 1</option>
+            {% for auditor in auditors %}
+            <option value="{{ auditor['_id'] }}" data-email="{{ auditor['email'] }}" 
+              {{ 'selected' if auditor['_id'] == audit.auditor1 else '' }}>
+              {{ auditor['full_name'] }} ({{ auditor['role'] }})
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Auditor 2</label>
+          <select name="auditor2" class="form-control">
+            <option value="">Select Auditor 2 (Optional)</option>
+            {% for auditor in auditors %}
+            <option value="{{ auditor['_id'] }}" data-email="{{ auditor['email'] }}" 
+              {{ 'selected' if auditor['_id'] == audit.auditor2 else '' }}>
+              {{ auditor['full_name'] }} ({{ auditor['role'] }})
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card mb-4">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Auditees</h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label class="form-label">Auditee 1</label>
+          <select name="auditee1" class="form-control" required>
+            <option value="">Select Auditee 1</option>
+            {% for auditee in auditees %}
+            <option value="{{ auditee['_id'] }}" data-email="{{ auditee['email'] }}" 
+              {{ 'selected' if auditee['_id'] == audit.auditee1 else '' }}>
+              {{ auditee['full_name'] }} ({{ auditee['role'] }})
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Auditee 2</label>
+          <select name="auditee2" class="form-control">
+            <option value="">Select Auditee 2 (Optional)</option>
+            {% for auditee in auditees %}
+            <option value="{{ auditee['_id'] }}" data-email="{{ auditee['email'] }}" 
+              {{ 'selected' if auditee['_id'] == audit.auditee2 else '' }}>
+              {{ auditee['full_name'] }} ({{ auditee['role'] }})
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <div class="d-flex justify-content-between">
+        <a href="{{ url_for('view_audit', audit_id=audit._id) }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Update Audit</button>
+      </div>
+    </form>
+  </div>
+</body>
+<script>
+const statusSelect = document.getElementById('statusSelect');
+const cancelBox = document.getElementById('cancelReasonContainer');
+
+function showCancelReason() {
+  cancelBox.style.display = statusSelect.value === 'Cancelled' ? 'block' : 'none';
+}
+
+// Change event
+statusSelect.addEventListener('change', showCancelReason);
+
+// Run once on page load (for edit mode)
+showCancelReason();
+</script>
+</html>
